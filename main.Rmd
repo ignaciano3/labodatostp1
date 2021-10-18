@@ -35,6 +35,6 @@ pag_wiki = read_html("https://en.wikipedia.org/wiki/List_of_airports_in_Argentin
 elem_tabla = html_element(pag_wiki, ".wikitable")
 aeropuertos = html_table(elem_tabla)
 aeropuertos = aeropuertos[c(1, 2, 3, 5)] # Elimino coordenadas, IATA
-rm(list = c("pag_wiki", "elem_tabla")) #Esto es para que no queden las variables sueltas
+rm(list = c("pag_wiki", "elem_tabla")) #Esto es para que no queden variables sueltas
 head(aeropuertos, 10)
 ```
