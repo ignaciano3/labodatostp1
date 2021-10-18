@@ -220,60 +220,12 @@ pre code {
 <h3>Imports de paquetes</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmVxdWlyZShnZ3Bsb3QyKVxuYGBgIn0= -->
-<pre class="r"><code>require(ggplot2)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmVxdWlyZShkYXRhLnRhYmxlKVxucmVxdWlyZShkcGx5cilcbnJlcXVpcmUocnZlc3QpXG5yZXF1aXJlKHhtbDIpXG5gYGAifQ== -->
+<pre class="r"><code>require(data.table)
+require(dplyr)
+require(rvest)
+require(xml2)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiBnZ3Bsb3QyXG4ifQ== -->
-<pre><code>Loading required package: ggplot2</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmVxdWlyZShkYXRhLnRhYmxlKVxuYGBgIn0= -->
-<pre class="r"><code>require(data.table)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiBkYXRhLnRhYmxlXG5SZWdpc3RlcmVkIFMzIG1ldGhvZCBvdmVyd3JpdHRlbiBieSAnZGF0YS50YWJsZSc6XG4gIG1ldGhvZCAgICAgICAgICAgZnJvbVxuICBwcmludC5kYXRhLnRhYmxlICAgICBcbmRhdGEudGFibGUgMS4xNC4wIHVzaW5nIDQgdGhyZWFkcyAoc2VlID9nZXREVHRocmVhZHMpLiAgTGF0ZXN0IG5ld3M6IHItZGF0YXRhYmxlLmNvbVxuIn0= -->
-<pre><code>Loading required package: data.table
-Registered S3 method overwritten by &#39;data.table&#39;:
-  method           from
-  print.data.table     
-data.table 1.14.0 using 4 threads (see ?getDTthreads).  Latest news: r-datatable.com</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmVxdWlyZShkcGx5cilcbmBgYCJ9 -->
-<pre class="r"><code>require(dplyr)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiBkcGx5clxuXG5BdHRhY2hpbmcgcGFja2FnZTog46S847ixZHBseXLjpLzjuLJcblxuVGhlIGZvbGxvd2luZyBvYmplY3RzIGFyZSBtYXNrZWQgZnJvbSDjpLzjuLFwYWNrYWdlOmRhdGEudGFibGXjpLzjuLI6XG5cbiAgICBiZXR3ZWVuLCBmaXJzdCwgbGFzdFxuXG5UaGUgZm9sbG93aW5nIG9iamVjdHMgYXJlIG1hc2tlZCBmcm9tIOOkvOO4sXBhY2thZ2U6c3RhdHPjpLzjuLI6XG5cbiAgICBmaWx0ZXIsIGxhZ1xuXG5UaGUgZm9sbG93aW5nIG9iamVjdHMgYXJlIG1hc2tlZCBmcm9tIOOkvOO4sXBhY2thZ2U6YmFzZeOkvOO4sjpcblxuICAgIGludGVyc2VjdCwgc2V0ZGlmZiwgc2V0ZXF1YWwsIHVuaW9uXG4ifQ== -->
-<pre><code>Loading required package: dplyr
-
-Attaching package: 㤼㸱dplyr㤼㸲
-
-The following objects are masked from 㤼㸱package:data.table㤼㸲:
-
-    between, first, last
-
-The following objects are masked from 㤼㸱package:stats㤼㸲:
-
-    filter, lag
-
-The following objects are masked from 㤼㸱package:base㤼㸲:
-
-    intersect, setdiff, setequal, union</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmVxdWlyZShodHRyKVxuYGBgIn0= -->
-<pre class="r"><code>require(httr)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiBodHRyXG4ifQ== -->
-<pre><code>Loading required package: httr</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmVxdWlyZShydmVzdClcbmBgYCJ9 -->
-<pre class="r"><code>require(rvest)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiBydmVzdFxuIn0= -->
-<pre><code>Loading required package: rvest</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmVxdWlyZSh4bWwyKVxuYGBgIn0= -->
-<pre class="r"><code>require(xml2)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiB4bWwyXG4ifQ== -->
-<pre><code>Loading required package: xml2</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -297,10 +249,10 @@ rm(files)</code></pre>
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGVhZChzYW1wbGVfbih2aWFqZXMsIDEwKSlcbmBgYCJ9 -->
 <pre class="r"><code>head(sample_n(viajes, 10))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEudGFibGUiLCJkYXRhLmZyYW1lIl0sIm5yb3ciOjYsIm5jb2wiOjksInN1bW1hcnkiOnsiRGVzY3JpcHRpb24iOlsiZGF0YS50YWJsZSBbNiB4IDldIl19fSwicmRmIjoiSDRzSUFBQUFBQUFBQnExVVMzUGFNQkIyZUNSQVNrcExwMmNkZXVYbGtBR093cGlVR1RBTVRqc1pic0lvUkttUkdOblF4NmwvdDRlY2V1c2hWRFlTRDlPaHpVdzlZMnYzMjArN3ExMnRoNjNieTh4dFJ0TzB1SmJRa2xvOEtVVHQxQmhVOUN0ZDB4SXhvWjBJU3pwWXZ3aFdYZ2lCa2d0bzBwRFJhNlZ5dGFTWEt6V0ZWQm9TYVVna3JWK1ZkQUhvNVEybFdxcm9lNXNDTjVVQXFTcWtYSmVjaHRDeVljajFtZzB6MXJTVWVOK0lONzlKYVozZXU0OEw3REl3NEdTSkpndzRqSUllOHZtanMzQVJzSkJER0VYdXM3anJqTTZHZUNwZy9oZjFlVW5zMWpKbG9ESHowUVArNzNxa1o5REhuSk52Tzh3Vzl1WWlmL3pQakdNNzlxTWxiR2pkYk9WV2J5dVByRDl6ZHZIUjhKZy9PQ3lVdDdnNTJzcE5jeXYzekNQKzRsWUpIb3FwdHZ0MXpPaUV5SDdtSVoxZ0QzUWZLVVllZ0QrNFdLVHBsZDN2Umd3Nzd2YUR2VEJNMjdZZ01BcVZ1a3I4Zk5BWm1FTXdnQVc5cm1qTnZ0bXhya0d6VUx0VUkvSzJaN1Q2bG1WMnU2RFYvM0RkaFRib3RUWk8wamFFVFdDM0w2dUhrUTZtT2MzWjV5SkZNK3pKY1lwOUY1L1ZhdlVyUWt3Nkx2SThlUVlGWmliSVI4VTdMdlpINmNwbkxpeU5CTnZZdVVlcUFlOFpWL0tGSVp4ak1NRWduQlZWNkFBbGQ4UVJNL0tUU3RONncrc2JNbWNCdjhlV1pFWXc5Wlhsdk0vSkZGUFFoMFpIblY5Y1VKOVF0b3ZsSU9iTUphSlR3R0t6TWQ5YzVnQ25hQmxjM2FmSW1jN1kzQmZES2s0VkMzNDB5VWd4VG5nRWVMbWdRUlVtQmVkK1FUOFY5S0Jnb1huOVpLVjh1aU9uMXlFVEsra3FLVjJkWWpvVnlhbzZ1bWlNMWIvb1FuUXdMSFp4emduMVZXY0U2aFY5TWZPS2wzR1lxNUR3Yk5yVGIwYzRjODczQlFBQSJ9 -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEudGFibGUiLCJkYXRhLmZyYW1lIl0sIm5yb3ciOjYsIm5jb2wiOjksInN1bW1hcnkiOnsiRGVzY3JpcHRpb24iOlsiZGF0YS50YWJsZSBbNiB4IDldIl19fSwicmRmIjoiSDRzSUFBQUFBQUFBQnAxVVMxZmFRQlFlRkZSU0g3UzIrMWwwQzRTQVJaY2hxS1JIQWdkczliZ2J3b2pUaGhuT0VPeGoxVC9zeWwwWDBwc3dReURWUmJzSTNQdk5kNTl6Ny9TYTExWGoya0FJYmFJc3lxSE5ISWhveStsV3JDTUxvZXdHYUJrNHlVZi8zNEYxQ0VLa0ZDS2FPakNzYXRtc2x5MnpjcUlSMDFKSWJjazVLWnVWTlU3VkxKdTFDUG13dERvdVY2dzFxOHF4OG5NRTJsNGNFNkZkK0E3ZzI0NlRRK2cxZk5sVVR0czlPcG9GUktwMDMzK2UwVURncm1UM1pDaXdMemh1azFBKytNREJIdkdaNENSSW16NnJHcDdBTHhEV005aHplVWdsWC9lOTQ1Q0JDTWtYK29MK2owYnJFWGVhZERxQlhPaC82b1lOc1NYN21VUmFSZFpqWmZ2MjZVMGlYN1VTdWRsTlpLZVR5QzBua1J1bmYvbHJuUGVlOTllM3RkenVYcTc0dS9GVytPZExmNHNMZjJkVEtZSUhUc2tVMjNKRWVjZzRtU3FEVGErc2ZlNmNCVDhHZ2crWnZnQkhUQWkybVF3WXA1cS9hNCtwWkQ3aCtDTU5GWFp3WVYvYTdjUjNxcDdkUnVmVTljNXhvMWl2MWxWT2IzdWRodXYxT3g1dTBZRDVqeE5vcm5pVy96SzJkMmE3UGFmbFhqUngvNnEyek0vdE5UNzFzVjJzV21acWEvTlNmQ3R4TW9aaUZodTA4UXQrNXZQNTd4UXg1d2RrT2xWbGFOQVlrcENVYmlYWXArbmFaeUd1VG9GbjFMOGorbHBhUW1wNTN3SG5GQThwamhkUk5lUXdRdGt0ZE5abmoxd2RMUXplWExLSmlQaHRjYy9HREhxc1QxNTFKSU9lNDQ3dHVMcCtHR1M0QTdHS0ZlSUJnRXVFL1JiamdWd09mWVJ6Y2g4TjlGT3FwbTB4Q1dIeG9LcU42SjNMcFpxUmtTbWdNT05SRjRaRi8yN0d2eFlyWnRReDlTZ2gxZTZNR2tvdDV4Y3hzM1BsSzZkOGJWRStnbXgxSXdNeW9Ici85K0VLNDI2WEpwSnhQWUFHb05OU0NBK0I1aG0rQ0RRU0Y0ZWUvZ0FqdXlsTTRBVUFBQT09In0= -->
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["Fecha"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Hora"],"name":[2],"type":["int"],"align":["right"]},{"label":["Clase de Vuelo"],"name":[3],"type":["chr"],"align":["left"]},{"label":["Clasificación Vuelo"],"name":[4],"type":["chr"],"align":["left"]},{"label":["Tipo de Movimiento"],"name":[5],"type":["chr"],"align":["left"]},{"label":["Origen OACI"],"name":[6],"type":["chr"],"align":["left"]},{"label":["Destino OACI"],"name":[7],"type":["chr"],"align":["left"]},{"label":["Aerolinea Nombre"],"name":[8],"type":["chr"],"align":["left"]},{"label":["Aeronave"],"name":[9],"type":["chr"],"align":["left"]}],"data":[{"1":"27/04/2017","2":"13","3":"Vuelo Privado con Matrícula Nacional","4":"Cabotaje","5":"Aterrizaje","6":"SANT","7":"SANT","8":"N/A","9":"CESSNA C-180"},{"1":"19/04/2019","2":"13","3":"Vuelo Privado con Matrícula Nacional","4":"Cabotaje","5":"Despegue","6":"SADM","7":"AR-0","8":"N/A","9":"PIPER PA-28"},{"1":"25/2/2020","2":"3","3":"Regular","4":"Cabotaje","5":"Aterrizaje","6":"SAZN","7":"SAEZ","8":"Flybondi","9":"BOEING B-737"},{"1":"14/12/2017","2":"8","3":"Regular","4":"Cabotaje","5":"Despegue","6":"SANT","7":"SABE","8":"Andes Líneas Aéreas","9":"MCDONNELL DOUGLAS MD80"},{"1":"27/01/2014","2":"20","3":"Regular","4":"Cabotaje","5":"Despegue","6":"SAZN","7":"SAME","8":"SOL Líneas Aéreas","9":"SAAB SF34"},{"1":"08/12/2019","2":"19","3":"Vuelo Privado con Matrícula Nacional","4":"Cabotaje","5":"Aterrizaje","6":"SAZR","7":"SAZR","8":"N/A","9":"CESSNA C-152"}],"options":{"columns":{"min":{},"max":[10],"total":[9]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+{"columns":[{"label":["Fecha"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Hora"],"name":[2],"type":["int"],"align":["right"]},{"label":["Clase de Vuelo"],"name":[3],"type":["chr"],"align":["left"]},{"label":["Clasificación Vuelo"],"name":[4],"type":["chr"],"align":["left"]},{"label":["Tipo de Movimiento"],"name":[5],"type":["chr"],"align":["left"]},{"label":["Origen OACI"],"name":[6],"type":["chr"],"align":["left"]},{"label":["Destino OACI"],"name":[7],"type":["chr"],"align":["left"]},{"label":["Aerolinea Nombre"],"name":[8],"type":["chr"],"align":["left"]},{"label":["Aeronave"],"name":[9],"type":["chr"],"align":["left"]}],"data":[{"1":"23/07/2019","2":"12","3":"Regular","4":"Internacional","5":"Despegue","6":"SAEZ","7":"SBGR","8":"Aerolíneas Argentinas","9":"BOEING B-737"},{"1":"02/07/2014","2":"15","3":"Vuelo Privado con Matrícula Nacional","4":"Cabotaje","5":"Despegue","6":"SAWH","7":"SAWH","8":"N/A","9":"ROBINSON Helicóptero"},{"1":"29/01/2019","2":"7","3":"Regular","4":"Cabotaje","5":"Despegue","6":"SADP","7":"SASA","8":"Flybondi","9":"BOEING B-737"},{"1":"30/04/2016","2":"1","3":"Regular","4":"Internacional","5":"Despegue","6":"SACO","7":"MPTO","8":"Copa Airlines","9":"BOEING B-737"},{"1":"08/12/2014","2":"17","3":"No Regular","4":"Cabotaje","5":"Aterrizaje","6":"SAHC","7":"SAZN","8":"American Jet","9":"FAIRCHILD SW4"},{"1":"18/07/2015","2":"4","3":"Regular","4":"Cabotaje","5":"Aterrizaje","6":"SABE","7":"SAWG","8":"LATAM Argentina","9":"AIRBUS A-320"}],"options":{"columns":{"min":{},"max":[10],"total":[9]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
   </script>
 </div>
 <!-- rnb-frame-end -->
@@ -330,7 +282,7 @@ aeropuertos[&quot;longitud&quot;] = longitud
 rm(list = c(&quot;pag_wiki&quot;, &quot;elem_tabla&quot;, &quot;latitud&quot;, &quot;longitud&quot;)) #Esto es para que no queden variables sueltas
 head(aeropuertos, 10)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MTAsIm5jb2wiOjYsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiMTAgeCA2Il19fSwicmRmIjoiSDRzSUFBQUFBQUFBQm8xVnkwN2JRQlExSVFsZzhlcERWWkdxMXQyMWkwYXhZeE95dEEwTGtFb2pVcldvdTBreVRheWFtWFJzUTJHVlQ2RWZnQlRCSHlSL3drZDBTWG9ubVVrOGhsWkVzbk45N2psbjdwMWNUNDUyanl2NnNhNXAycUtXMXdyYVlnRkNyZWpYVGN1eE5DMmZnNmNGeUt6dzcxL0Flc2JUY0czQ0JiSStUenh4dzVnYVI2TXJhalF3NlNTWUNZWHVSaTNhNmdha2d3U1NkeStTVU1qV1BOUWRYU0hEQ3hGcFNjS0toMWdRZ2dnTDFycUhTUUQyQjhub044TVhndmJjdzR3ZzFxWkdHeHY3TE9qUWMweUU0cTFIdzlIVktXTEd1d1lpaG85WVNDUE9rL2g3WWZMYVN6Q0JsQnN3SEJrbk9HYTBSOE1nQmhGaUdEMlNKZmRpeWk3NjNhU1p4S0tVWlg5MEEwVTJwZGRxMnV0QmJLclRKNXQ1aUR1TS9rZTUvREdJQWtyKzRmVG9GWlg2OHczM3k5RTg5Zy9uOFRjM0ZYdXB1SkdLRCtieDUvMFVub3E5dlhtOFc4L00wdGE5V2VKbDlpaUxoZWpwZktZeW1WVStXeGxzeTZjbmlMUVJpYkd4RjBFaUszcVRHUkU1ZlRQYXRLd1g2aFJtVEY0OU5JMFpoODNaVktyYWx5NkdnVUxzWjRLTkE4bzZHSDcyc3labTU3TGZ2ZENvb3hEYW1DdlZMZHV3bmVHZ1hMN3RYOXM3dC8yYmhvUXI1ZUhBcVFGc09RcThEVEJubTdZQzd3d0hkb1d6YTJuWU5zR2JtNVJWZGhYWUZtZGJhZGdDYjlQaDdISjJTZFBrUzVvS2JBOEhGYjRrdjJYZ2JRNkx1cFZ1Tjh0VjZJdDNlbTBENmVickROOEdIZS9wdWxKVGNLY0dEZk5hSFZQbFc4RG5HMUZXK1ZYWnNsVzk1Mk5YdWIvcTQxU2czdW9EOVhDZlNUMjJ5b2VkdGpqdVZPL2hrNzV0WjRvcnAyK0JvSlBaMjFvVW9sVS9pTStIbHhGbXA3Z3RUNFU2bzZjQmFXSDVsdTM3N2lkNTVJb0pHbDV5TjBGWUNsRWN4TWxNSDFMU21UeXJCYXd3ZWxhU1JhekJsZXZEYlR3ZS84bFcyZ3BSSkN1Vm9ONUdNU3A5WjN4WlRidkxTSlpvTDRhVERFUTUvZ2RUeUlnWFdBYllTQWl2cFAyaDFVM0lqdy9tZEQ0Z1BmMnNpVmhQeGNYcGtybXhzQ3JJQXh0T21ZREl2U2lFcUlsRDhiQU9IVThhTHZWWVFPUUxxd01hbFdJYUk4blRXelNVeUtRMzdlNHZWMURDWmxnSEFBQT0ifQ== -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MTAsIm5jb2wiOjYsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiMTAgeCA2Il19fSwicmRmIjoiSDRzSUFBQUFBQUFBQm8xVnkwN2JRQlExSVFsZzhlcERWWkdxMXQyMWkwYXhZeE95dEEwTGtFb2pVcldvdTBreVRheWFtWFJzUTJHVlQ2RWZnQlRCSHlSL3drZDBTWG9ubVVrOGhsWkVzbk45N2psbjdwMWNUNDUyanl2NnNhNXAycUtXMXdyYVlnRkNyZWpYVGN1eE5DMmZnNmNGeUt6dzcxL0Flc2JUY0czQ0JiSStUenh4dzVnYVI2TXJhalF3NlNTWUNZWHVSaTNhNmdha2d3U1NkeStTVU1qV1BOUWRYU0hEQ3hGcFNjS0toMWdRZ2dnTDFycUhTUUQyQjhub044TVhndmJjdzR3ZzFxWkdHeHY3TE9qUWMweUU0cTFIdzlIVktXTEd1d1lpaG85WVNDUE9rL2g3WWZMYVN6Q0JsQnN3SEJrbk9HYTBSOE1nQmhGaUdEMlNKZmRpeWk3NjNhU1p4S0tVWlg5MEEwVTJwZGRxMnV0QmJLclRKNXQ1aUR1TS9rZTUvREdJQWtyKzRmVG9GWlg2OHczM3k5RTg5Zy9uOFRjM0ZYdXB1SkdLRCtieDUvMFVub3E5dlhtOFc4L00wdGE5V2VKbDlpaUxoZWpwZktZeW1WVStXeGxzeTZjbmlMUVJpYkd4RjBFaUszcVRHUkU1ZlRQYXRLd1g2aFJtVEY0OU5JMFpoODNaVktyYWx5NkdnVUxzWjRLTkE4bzZHSDcyc3labTU3TGZ2ZENvb3hEYW1DdlZMZHV3bmVHZ1hMN3RYOXM3dC8yYmhvUXI1ZUhBcVFGc09RcThEVEJubTdZQzd3d0hkb1d6YTJuWU5zR2JtNVJWZGhYWUZtZGJhZGdDYjlQaDdISjJTZFBrUzVvS2JBOEhGYjRrdjJYZ2JRNkx1cFZ1Tjh0VjZJdDNlbTBENmVickROOEdIZS9wdWxKVGNLY0dEZk5hSFZQbFc4RG5HMUZXK1ZYWnNsVzk1Mk5YdWIvcTQxU2czdW9EOVhDZlNUMjJ5b2VkdGpqdVZPL2hrNzV0WjRvcnAyK0JvSlBaMjFvVW9sVS9pTStIbHhGbXA3Z3RUNFU2bzZjQmFXSDVsdTM3N2lkNTVJb0pHbDV5TjBGWUNsRWN4TWxNSDFMU21UeXJCYXd3ZWxhU1JhekJsZXZEYlR3ZS84bFcyZ3BSSkN1Vm9ONUdNU3A5WjN4WlRidkxTSlpvTDRhVERFUTUvZ2RUeUlnWFdBYllTQWl2cFAyaDFVM0lqdysxNlh4QWV2cFpFN0dlaW92VEpYTmpZVldRQnphY01nR1JlMUVJVVJPSDRtRWRPcDQwWE9xeGdNZ1hWZ2MwS3NVMFJwS250Mmdva1VsdjJ0MWZ4VTNSeWxnSEFBQT0ifQ== -->
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["City served"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Province"],"name":[2],"type":["chr"],"align":["left"]},{"label":["ICAO"],"name":[3],"type":["chr"],"align":["left"]},{"label":["Airport name"],"name":[4],"type":["chr"],"align":["left"]},{"label":["latitud"],"name":[5],"type":["chr"],"align":["left"]},{"label":["longitud"],"name":[6],"type":["chr"],"align":["left"]}],"data":[{"1":"Alto Río Senguer","2":"Chubut","3":"SAVR","4":"Alto Río Senguer Airport","5":"45°00'48\"S","6":"070°48'46\"W"},{"1":"Ascochinga","2":"Córdoba","3":"SACN","4":"Ascochinga Airport","5":"30°59'25\"S","6":"064°14'39\"W"},{"1":"Azul","2":"Buenos Aires","3":"SAZA","4":"Azul Airport","5":"36°50'14\"S","6":"059°52'51\"W"},{"1":"Bahía Blanca","2":"Buenos Aires","3":"SAZB","4":"Comandante Espora Airport","5":"38°43'29\"S","6":"062°10'09\"W"},{"1":"Bariloche","2":"Río Negro","3":"SAZS","4":"San Carlos de Bariloche Airport","5":"41°09'04\"S","6":"071°09'27\"W"},{"1":"Benito Juárez","2":"Buenos Aires","3":"SAZJ","4":"Benito Juárez Airport","5":"37°42'22\"S","6":"059°47'31\"W"},{"1":"Bernardo de Irigoyen","2":"Misiones","3":"SATI","4":"Bernardo de Irigoyen Airport","5":"26°15'00\"S","6":"053°37'46\"W"},{"1":"Bolívar (San Carlos de Bolívar)","2":"Buenos Aires","3":"SAZI","4":"Bolívar Airport","5":"36°11'11\"S","6":"061°04'34\"W"},{"1":"Buenos Aires metropolitan area","2":"Buenos Aires","3":"SABE","4":"Aeroparque Jorge Newbery","5":"34°33'33\"S","6":"058°24'57\"W"},{"1":"Buenos Aires metropolitan area","2":"Buenos Aires","3":"SADP","4":"El Palomar Airport","5":"34°36'35\"S","6":"058°36'45\"W"}],"options":{"columns":{"min":{},"max":[10],"total":[6]},"rows":{"min":[10],"max":[10],"total":[10]},"pages":{}}}
@@ -339,11 +291,33 @@ head(aeropuertos, 10)</code></pre>
 <!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<ol style="list-style-type: decimal">
+<li><p>Agreguen nuevas variables con la ciudad, provincia y coordenadas que corresponde a cada aeropuerto.</p></li>
+<li><p>Calculen la distancia recorrida por cada vuelo. La función distHaversine del paquete geosphere puede resultarles útil.</p></li>
+<li><p>Calculen la velocidad media de cada vuelo No veo la manera de sacar la velocidad media ?)</p></li>
+</ol>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYWVyb3B1ZXJ0b3MgPSBhZXJvcHVlcnRvc1ssYygzLDUsNiwxLDIsNCldXG5oZWFkKGFlcm9wdWVydG9zKVxuYGBgIn0= -->
+<pre class="r"><code>aeropuertos = aeropuertos[,c(3,5,6,1,2,4)]
+head(aeropuertos)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6NiwibmNvbCI6Niwic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyI2IHggNiJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUJtMVV3VzZiUUJBbGprbGlaS2RPSzFYS3FmeEFMQnVESFIrQjl0QWMwc2lXMnFpM05XeHRWTEpyTFpDMk9mbFQwZytJWk1WL2dQOGtuOUZEM0ZuWXRRMEpFakQ3NXMzd2RtYVc0Y2Zycm5hdEtZcXlyMVFWVmRsWHdWUU8zS3VPWVJtS1VxM0FhZzg4TmY3K0RheDMzQTEzTTMvUHVhUFo3cmZUaFhuK05IODBlMC96NWJjTjNqUFRSY2NFdkRzbzROWWdYVmdHNEZhbnlEZUEzd2E4WGVUM08rbUNRNDlHLzBVZXM4L3ppenhDVnk3NHdKMG00eVFXN0NOM3RXUStIU1BoclRzSkpqVFM3WURoNkZVc2o5T0dxd2VxWCtJSm82K3pDclU0dGNPWTZsbklDSk5KZ2htbnpTaUxSZkJiTy9Lb053M0lCSlU4ZGZzdUNVdllxVXR2RVBFUmliSCtLUUpIT2VqRENCSGRSU3dFUFQ3V0hjU0NFTkxqRFMyWDlkN0JKQUJoRjhucUw4TjNXMitoWU5XUi9YVzR0ZDNMcmYzZDNyR2RIWHUwWTErVWl2SEd0S0J2dko5OE9KWWpDWGRoWEt5c25WWUI3Z0hNMlh4a2R1QnphSEtYc3dlN3NDbG5vbDFrOTRITlI4c3djcmlnNk9SRmU0UjhiZHNXdVNIZURoSFdjTkIwOVlCMEowVEVrNFRhcHRpQ2RWd3NjdW40cUFUZDdJeExEaDZGbEV5Q09QSGwrb3JSMjRCNE1tVkROQ3E5NTlGUzJXZlgvaUxzd3hERldYek9yN3RCL0NlOWp6Qzd4WDVKUUkzUlh5MHBvZ0YzWlE2UDlYcjlyNnpVQzFFa2xVcFE4MUdNV2o4WWw2RW96NldRUXpxTEEwb2dxTUwvRUdvcGVJK1ZnR1pDdUJML3pKc201T2RaeCtKZnlQejUxUkQyUWRIbTM2eXNSUzVWSG5Ob1pFQmtjZFFRalhFb0ZzZXc1V3pIclJrTGlEd3pHcUJSSzZZeGtqek5vNkZFc3MwcHovOEJSdGVicUJvRkFBQT0ifQ== -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["longitud"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Province"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Airport name"],"name":[3],"type":["chr"],"align":["left"]},{"label":["ICAO"],"name":[4],"type":["chr"],"align":["left"]},{"label":["latitud"],"name":[5],"type":["chr"],"align":["left"]},{"label":["City served"],"name":[6],"type":["chr"],"align":["left"]}],"data":[{"1":"070°48'46\"W","2":"Chubut","3":"Alto Río Senguer Airport","4":"SAVR","5":"45°00'48\"S","6":"Alto Río Senguer"},{"1":"064°14'39\"W","2":"Córdoba","3":"Ascochinga Airport","4":"SACN","5":"30°59'25\"S","6":"Ascochinga"},{"1":"059°52'51\"W","2":"Buenos Aires","3":"Azul Airport","4":"SAZA","5":"36°50'14\"S","6":"Azul"},{"1":"062°10'09\"W","2":"Buenos Aires","3":"Comandante Espora Airport","4":"SAZB","5":"38°43'29\"S","6":"Bahía Blanca"},{"1":"071°09'27\"W","2":"Río Negro","3":"San Carlos de Bariloche Airport","4":"SAZS","5":"41°09'04\"S","6":"Bariloche"},{"1":"059°47'31\"W","2":"Buenos Aires","3":"Benito Juárez Airport","4":"SAZJ","5":"37°42'22\"S","6":"Benito Juárez"}],"options":{"columns":{"min":{},"max":[10],"total":[6]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Cosas para investigar - que aeronaves se usan mas - que marcas de aeronaves se usan mas - que aerolinea, hora se viaja mas en si barplots para cada variable</p>
+<p>vuelo mas lejano</p>
 <!-- rnb-text-end -->
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQoNCiMjIyBJbXBvcnRzIGRlIHBhcXVldGVzDQoNCmBgYHtyfQ0KcmVxdWlyZShnZ3Bsb3QyKQ0KcmVxdWlyZShkYXRhLnRhYmxlKQ0KcmVxdWlyZShkcGx5cikNCnJlcXVpcmUoaHR0cikNCnJlcXVpcmUocnZlc3QpDQpyZXF1aXJlKHhtbDIpDQpgYGANCg0KIyMjIFByZXByb2Nlc2FtaWVudG8NCg0KIyMjIyBBcmNoaXZvcyBjc3YgVnVlbG9zDQpgYGB7cn0NCmZpbGVzID0gbGlzdC5maWxlcyhwYXR0ZXJuPSIqLmNzdiIpDQp2aWFqZXMgPSBkby5jYWxsKHJiaW5kLCBsYXBwbHkoZmlsZXMsIGZyZWFkLCBzZXAgPSAiOyIpKQ0Kcm0oZmlsZXMpDQpgYGANCg0KIyMjIyMgQWxndW5vcyB2dWVsb3MNCmBgYHtyfQ0KaGVhZChzYW1wbGVfbih2aWFqZXMsIDEwKSkNCmBgYA0KDQojIyMjIFBhcnRlIFdpa2lwZWRpYQ0KYGBge3J9DQpwYWdfd2lraSA9IHJlYWRfaHRtbCgiaHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvTGlzdF9vZl9haXJwb3J0c19pbl9BcmdlbnRpbmEiKQ0KZWxlbV90YWJsYSA9IGh0bWxfZWxlbWVudChwYWdfd2lraSwgIi53aWtpdGFibGUiKQ0KDQpsYXRpdHVkID0gaHRtbF9ub2RlcyhwYWdfd2lraSwgY3NzID0gJy5sYXRpdHVkZScpDQpsYXRpdHVkID0gaHRtbF90ZXh0KGxhdGl0dWQpDQoNCmxvbmdpdHVkID0gaHRtbF9ub2RlcyhwYWdfd2lraSwgY3NzID0gJy5sb25naXR1ZGUnKQ0KbG9uZ2l0dWQgPSBodG1sX3RleHQobG9uZ2l0dWQpDQoNCmFlcm9wdWVydG9zID0gaHRtbF90YWJsZShlbGVtX3RhYmxhKQ0KYWVyb3B1ZXJ0b3MgPSBhZXJvcHVlcnRvc1tjKC00LC02KV0gIyBFbGltaW5vIElBVEEsIENvb3JkZW5hZGFzDQphZXJvcHVlcnRvc1sibGF0aXR1ZCJdID0gbGF0aXR1ZA0KYWVyb3B1ZXJ0b3NbImxvbmdpdHVkIl0gPSBsb25naXR1ZA0KDQpybShsaXN0ID0gYygicGFnX3dpa2kiLCAiZWxlbV90YWJsYSIsICJsYXRpdHVkIiwgImxvbmdpdHVkIikpICNFc3RvIGVzIHBhcmEgcXVlIG5vIHF1ZWRlbiB2YXJpYWJsZXMgc3VlbHRhcw0KaGVhZChhZXJvcHVlcnRvcywgMTApDQpgYGANCg0K</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQoNCiMjIyBJbXBvcnRzIGRlIHBhcXVldGVzDQoNCmBgYHtyfQ0KcmVxdWlyZShkYXRhLnRhYmxlKQ0KcmVxdWlyZShkcGx5cikNCnJlcXVpcmUocnZlc3QpDQpyZXF1aXJlKHhtbDIpDQpgYGANCg0KIyMjIFByZXByb2Nlc2FtaWVudG8NCg0KIyMjIyBBcmNoaXZvcyBjc3YgVnVlbG9zDQpgYGB7cn0NCmZpbGVzID0gbGlzdC5maWxlcyhwYXR0ZXJuPSIqLmNzdiIpDQp2aWFqZXMgPSBkby5jYWxsKHJiaW5kLCBsYXBwbHkoZmlsZXMsIGZyZWFkLCBzZXAgPSAiOyIpKQ0Kcm0oZmlsZXMpDQpgYGANCg0KIyMjIyMgQWxndW5vcyB2dWVsb3MNCmBgYHtyfQ0KaGVhZChzYW1wbGVfbih2aWFqZXMsIDEwKSkNCmBgYA0KDQojIyMjIFBhcnRlIFdpa2lwZWRpYQ0KYGBge3J9DQpwYWdfd2lraSA9IHJlYWRfaHRtbCgiaHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvTGlzdF9vZl9haXJwb3J0c19pbl9BcmdlbnRpbmEiKQ0KZWxlbV90YWJsYSA9IGh0bWxfZWxlbWVudChwYWdfd2lraSwgIi53aWtpdGFibGUiKQ0KDQpsYXRpdHVkID0gaHRtbF9ub2RlcyhwYWdfd2lraSwgY3NzID0gJy5sYXRpdHVkZScpDQpsYXRpdHVkID0gaHRtbF90ZXh0KGxhdGl0dWQpDQoNCmxvbmdpdHVkID0gaHRtbF9ub2RlcyhwYWdfd2lraSwgY3NzID0gJy5sb25naXR1ZGUnKQ0KbG9uZ2l0dWQgPSBodG1sX3RleHQobG9uZ2l0dWQpDQoNCmFlcm9wdWVydG9zID0gaHRtbF90YWJsZShlbGVtX3RhYmxhKQ0KYWVyb3B1ZXJ0b3MgPSBhZXJvcHVlcnRvc1tjKC00LC02KV0gIyBFbGltaW5vIElBVEEsIENvb3JkZW5hZGFzDQphZXJvcHVlcnRvc1sibGF0aXR1ZCJdID0gbGF0aXR1ZA0KYWVyb3B1ZXJ0b3NbImxvbmdpdHVkIl0gPSBsb25naXR1ZA0KDQpybShsaXN0ID0gYygicGFnX3dpa2kiLCAiZWxlbV90YWJsYSIsICJsYXRpdHVkIiwgImxvbmdpdHVkIikpICNFc3RvIGVzIHBhcmEgcXVlIG5vIHF1ZWRlbiB2YXJpYWJsZXMgc3VlbHRhcw0KaGVhZChhZXJvcHVlcnRvcywgMTApDQpgYGANCg0KDQoxLiBBZ3JlZ3VlbiBudWV2YXMgdmFyaWFibGVzIGNvbiBsYSBjaXVkYWQsIHByb3ZpbmNpYSB5IGNvb3JkZW5hZGFzIHF1ZSBjb3JyZXNwb25kZSBhIGNhZGEgYWVyb3B1ZXJ0by4gIA0KDQoyLiBDYWxjdWxlbiBsYSBkaXN0YW5jaWEgcmVjb3JyaWRhIHBvciBjYWRhIHZ1ZWxvLiBMYSBmdW5jacOzbiBkaXN0SGF2ZXJzaW5lIGRlbCBwYXF1ZXRlDQpnZW9zcGhlcmUgcHVlZGUgcmVzdWx0YXJsZXMgw7p0aWwuDQoNCjMuIENhbGN1bGVuIGxhIHZlbG9jaWRhZCBtZWRpYSBkZSBjYWRhIHZ1ZWxvIA0KTm8gdmVvIGxhIG1hbmVyYSBkZSBzYWNhciBsYSB2ZWxvY2lkYWQgbWVkaWEgPykNCmBgYHtyfQ0KYWVyb3B1ZXJ0b3MgPSBhZXJvcHVlcnRvc1ssYygzLDUsNiwxLDIsNCldDQpoZWFkKGFlcm9wdWVydG9zKQ0KYGBgDQoNCkNvc2FzIHBhcmEgaW52ZXN0aWdhcg0KLSBxdWUgYWVyb25hdmVzIHNlIHVzYW4gbWFzDQotIHF1ZSBtYXJjYXMgZGUgYWVyb25hdmVzIHNlIHVzYW4gbWFzDQotIHF1ZSBhZXJvbGluZWEsIGhvcmEgc2UgdmlhamEgbWFzDQplbiBzaSBiYXJwbG90cyBwYXJhIGNhZGEgdmFyaWFibGUNCg0KdnVlbG8gbWFzIGxlamFubw0K</div>
 
 
 

@@ -7,10 +7,8 @@ output: html_notebook
 ### Imports de paquetes
 
 ```{r}
-require(ggplot2)
 require(data.table)
 require(dplyr)
-require(httr)
 require(rvest)
 require(xml2)
 ```
@@ -49,3 +47,23 @@ rm(list = c("pag_wiki", "elem_tabla", "latitud", "longitud")) #Esto es para que 
 head(aeropuertos, 10)
 ```
 
+
+1. Agreguen nuevas variables con la ciudad, provincia y coordenadas que corresponde a cada aeropuerto.  
+
+2. Calculen la distancia recorrida por cada vuelo. La función distHaversine del paquete
+geosphere puede resultarles útil.
+
+3. Calculen la velocidad media de cada vuelo 
+No veo la manera de sacar la velocidad media ?)
+```{r}
+aeropuertos = aeropuertos[,c(3,5,6,1,2,4)]
+head(aeropuertos)
+```
+
+Cosas para investigar
+- que aeronaves se usan mas
+- que marcas de aeronaves se usan mas
+- que aerolinea, hora se viaja mas
+en si barplots para cada variable
+
+vuelo mas lejano
