@@ -1,0 +1,40 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+------------------------------------------------------------------------
+
+### Imports de paquetes
+
+```{r}
+require(ggplot2)
+require(data.table)
+require(dplyr)
+require(httr)
+require(rvest)
+require(xml2)
+```
+
+### Preprocesamiento
+
+#### Vuelos csv
+```{r, eval=FALSE}
+files = list.files(pattern="*.csv")
+viajes = do.call(rbind, lapply(files, fread, sep = ";"))
+rm(files)
+```
+
+##### Algunos vuelos
+```{r}
+sample_n(viajes, 5)
+```
+
+#### Parte Wikipedia
+```{r}
+pag_wiki = read_html("https://en.wikipedia.org/wiki/List_of_airports_in_Argentina")
+elem_tabla = html_element(pag_wiki, ".wikitable")
+aeropuertos = html_table(elem_tabla)
+aeropuertos = aeropuertos[c(1, 2, 3, 5)] # Elimino coordenadas, IATA
+rm(list = c("pag_wiki", "elem_tabla")) #Esto es para que no queden las variables sueltas
+head(aeropuertos, 10)
+```
