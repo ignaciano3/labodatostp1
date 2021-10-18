@@ -1,5 +1,7 @@
 ---
-title: "R Notebook"
+title: "Trabajo Práctico 1"
+author: "Ignacio Garcia Pizales, ..."
+date: "18 de Octubre"
 output: html_notebook
 ---
 ------------------------------------------------------------------------
@@ -23,11 +25,13 @@ rm(files)
 ```
 
 ##### Algunos vuelos
+
 ```{r}
 head(sample_n(viajes, 10))
 ```
 
 #### Parte Wikipedia
+
 ```{r}
 pag_wiki = read_html("https://en.wikipedia.org/wiki/List_of_airports_in_Argentina")
 elem_tabla = html_element(pag_wiki, ".wikitable")
@@ -47,7 +51,6 @@ rm(list = c("pag_wiki", "elem_tabla", "latitud", "longitud")) #Esto es para que 
 head(aeropuertos, 10)
 ```
 
-
 1. Agreguen nuevas variables con la ciudad, provincia y coordenadas que corresponde a cada aeropuerto.  
 
 2. Calculen la distancia recorrida por cada vuelo. La función distHaversine del paquete
@@ -55,6 +58,7 @@ geosphere puede resultarles útil.
 
 3. Calculen la velocidad media de cada vuelo 
 No veo la manera de sacar la velocidad media ?)
+
 ```{r}
 aeropuertos = aeropuertos[,c(3,5,6,1,2,4)]
 head(aeropuertos)
