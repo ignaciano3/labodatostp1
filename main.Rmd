@@ -6,7 +6,7 @@ output: html_notebook
 
 ### Imports de paquetes
 
-```{r eval=FALSE}
+```{r}
 require(ggplot2)
 require(data.table)
 require(dplyr)
@@ -18,7 +18,7 @@ require(xml2)
 ### Preprocesamiento
 
 #### Vuelos csv
-```{r, eval=FALSE}
+```{r}
 files = list.files(pattern="*.csv")
 viajes = do.call(rbind, lapply(files, fread, sep = ";"))
 rm(files)
@@ -26,15 +26,26 @@ rm(files)
 
 ##### Algunos vuelos
 ```{r}
-sample_n(viajes, 5)
+head(sample_n(viajes, 10))
 ```
 
 #### Parte Wikipedia
 ```{r}
 pag_wiki = read_html("https://en.wikipedia.org/wiki/List_of_airports_in_Argentina")
 elem_tabla = html_element(pag_wiki, ".wikitable")
+
+latitud = html_nodes(pag_wiki, css = '.latitude')
+latitud = html_text(latitud)
+
+longitud = html_nodes(pag_wiki, css = '.longitude')
+longitud = html_text(longitud)
+
 aeropuertos = html_table(elem_tabla)
-aeropuertos = aeropuertos[-4] # Elimino IATA
-rm(list = c("pag_wiki", "elem_tabla")) #Esto es para que no queden variables sueltas
+aeropuertos = aeropuertos[c(-4,-6)] # Elimino IATA, Coordenadas
+aeropuertos["latitud"] = latitud
+aeropuertos["longitud"] = longitud
+
+rm(list = c("pag_wiki", "elem_tabla", "latitud", "longitud")) #Esto es para que no queden variables sueltas
 head(aeropuertos, 10)
 ```
+
