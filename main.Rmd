@@ -17,7 +17,7 @@ require(xml2)
 
 ### Preprocesamiento
 
-#### Vuelos csv
+#### Archivos csv Vuelos
 ```{r}
 files = list.files(pattern="*.csv")
 viajes = do.call(rbind, lapply(files, fread, sep = ";"))
