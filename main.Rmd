@@ -19,8 +19,8 @@ require(xml2)
 
 #### Archivos csv Vuelos
 ```{r}
-files = list.files(pattern="*.csv")
-viajes = do.call(rbind, lapply(files, fread, sep = ";"))
+files = list.files(pattern="*.csv") # Lo tenía de antes, lo dejo igual para varios archivos
+viajes = do.call(rbind, lapply(files, fread, sep = ";", encoding = "UTF-8"))
 rm(files)
 ```
 
@@ -57,7 +57,6 @@ head(aeropuertos, 10)
 geosphere puede resultarles útil.
 
 3. Calculen la velocidad media de cada vuelo 
-No veo la manera de sacar la velocidad media ?)
 
 ```{r}
 aeropuertos = aeropuertos[,c(3,5,6,1,2,4)]
