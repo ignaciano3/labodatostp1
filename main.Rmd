@@ -18,24 +18,26 @@ require(leaflet)
 require(tibble)
 require(ggplot2)
 require(RColorBrewer)
+require(readr)
 ```
 
 ### Preprocesamiento
 
 #### Archivos csv Vuelos
 ```{r}
-viajes = read.csv("202109-informe-ministerio.csv", sep = ";", encoding = "UTF-8")
+viajes = read_csv2("202109-informe-ministerio.csv")
 
 viajes <- viajes %>% 
-              rename(Hora = `Hora.UTC`,
-                     Clase = `Clase.de.Vuelo..todos.los.vuelos.`,
-                     Clasificación = `Clasificación.Vuelo`,
-                     Tipo = `Tipo.de.Movimiento`,
-                     Destino = `Origen...Destino`,
-                     Aerolinea = `Aerolinea.Nombre`,
-                     Calidad = `Calidad.dato`)
+              rename(Hora = `Hora UTC`,
+                     Clase = `Clase de Vuelo (todos los vuelos)`,
+                     Clasificación = `Clasificación Vuelo`,
+                     Tipo = `Tipo de Movimiento`,
+                     Destino = `Origen / Destino`,
+                     Aerolinea = `Aerolinea Nombre`,
+                     Calidad = `Calidad dato`)
 viajes$Fecha_Hora = paste(viajes$Fecha, viajes$Hora)
-viajes$Fecha_Hora = dmy_hm(viajes$Fecha_Hora)
+typeof(viajes$Fecha_Hora)
+viajes$Fecha_Hora = dmy_hms(viajes$Fecha_Hora)
 viajes <- subset(viajes, select = -c(Fecha, Hora, Calidad))
 viajes = add_column(viajes, id = 1:nrow(viajes), .before = 1)
 head(sample_n(viajes, 10))
@@ -88,32 +90,26 @@ ggplot(data=n_occur, aes(x=dia_semana_despegue, y=n)) +
   geom_bar(stat="identity", width = 0.7, fill = coul) +
   xlab(element_blank()) +
   theme_light()
+rm(n_occur)
 ```
 
 
 
-#### Parte Wikipedia
+### Parte Wikipedia
 
 ```{r}
-pag_wiki = read_html("https://en.wikipedia.org/wiki/List_of_airports_in_Argentina")
-elem_tabla = html_element(pag_wiki, ".wikitable")
-
-latitud = html_nodes(pag_wiki, css = '.latitude')
-latitud = html_text(latitud)
-
-longitud = html_nodes(pag_wiki, css = '.longitude')
-longitud = html_text(longitud)
-
-aeropuertos = html_table(elem_tabla)
-aeropuertos = aeropuertos[c(-4,-6)] # Elimino IATA, Coordenadas
-aeropuertos["latitud"] = latitud
-aeropuertos["longitud"] = longitud
-
-rm(list = c("pag_wiki", "elem_tabla", "latitud", "longitud")) #Esto es para que no queden variables sueltas
-head(aeropuertos, 10)
+aeropuertos = read_csv("sna_abril_2021_fixed_encoding (1).csv")
+aeropuertos <- subset(aeropuertos, select = c(fna, nam, ana, x, y))
+aeropuertos = aeropuertos %>% rename(Nombre = fna,
+                                     Ciudad = nam,
+                                     id = ana,
+                                     lon = x,
+                                     lat = y)
+head(aeropuertos)
 ```
-
-1. Agreguen nuevas variables con la ciudad, provincia y coordenadas que corresponde a cada aeropuerto.  
+1. El dataset tiene el código de los aeropuertos. Agreguen nuevas variables con la ciudad,
+provincia y coordenadas que corresponde a cada aeropuerto. Pueden encontrar esta
+información en este artículo de Wikipedia
 
 2. Calculen la distancia recorrida por cada vuelo. La función distHaversine del paquete
 geosphere puede resultarles útil.
@@ -121,6 +117,22 @@ geosphere puede resultarles útil.
 3. Calculen la velocidad media de cada vuelo 
 
 ```{r}
-aeropuertos = aeropuertos[,c(3,5,6,1,2,4)]
-head(aeropuertos)
+# pag_wiki = read_html("https://en.wikipedia.org/wiki/List_of_airports_in_Argentina")
+# elem_tabla = html_element(pag_wiki, ".wikitable")
+# 
+# latitud = html_nodes(pag_wiki, css = '.latitude')
+# latitud = html_text(latitud)
+# 
+# longitud = html_nodes(pag_wiki, css = '.longitude')
+# longitud = html_text(longitud)
+# 
+# aeropuertos = html_table(elem_tabla)
+# aeropuertos <- subset(aeropuertos, select = -c(ICAO, Coordinates))# Elimino ICAO, Coordenadas
+# aeropuertos["latitud"] = latitud
+# aeropuertos["longitud"] = longitud
+# 
+# aeropuertos <- aeropuertos %>% filter(IATA != "")
+# 
+# rm(list = c("pag_wiki", "elem_tabla", "latitud", "longitud")) #Esto es para que no queden variables sueltas
+# head(aeropuertos, 10)
 ```
