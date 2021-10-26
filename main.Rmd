@@ -9,25 +9,65 @@ output: html_notebook
 ### Imports de paquetes
 
 ```{r}
-require(data.table)
 require(dplyr)
 require(rvest)
 require(xml2)
+require(geosphere)
+require(lubridate)
 ```
 
 ### Preprocesamiento
 
 #### Archivos csv Vuelos
 ```{r}
-files = list.files(pattern="*.csv") # Lo tenía de antes, lo dejo igual para varios archivos
-viajes = do.call(rbind, lapply(files, fread, sep = ";", encoding = "UTF-8"))
-rm(files)
+viajes = read.csv("202109-informe-ministerio.csv", sep = ";", encoding = "UTF-8")
+
+viajes <- viajes %>% 
+              rename(Hora = `Hora.UTC`,
+                     Clase = `Clase.de.Vuelo..todos.los.vuelos.`,
+                     Clasificación = `Clasificación.Vuelo`,
+                     Tipo = `Tipo.de.Movimiento`,
+                     Destino = `Origen...Destino`,
+                     Aerolinea = `Aerolinea.Nombre`,
+                     Calidad = `Calidad.dato`)
+viajes$Fecha_Hora = paste(viajes$Fecha, viajes$Hora)
+viajes$Fecha_Hora = dmy_hm(viajes$Fecha_Hora)
+viajes = viajes[,c(-1, -2)]
+viajes$id = 1:nrow(viajes)
+
+head(sample_n(viajes, 10))
 ```
 
-##### Algunos vuelos
+
+##### Separo en aterrizajes y despegues
 
 ```{r}
-head(sample_n(viajes, 10))
+aterrizajes <- viajes %>% filter(Tipo == "Aterrizaje" & Clase == "Regular" & Clasificación == "Dom")
+despegues <- viajes %>% filter(Tipo == "Despegue" & Clase == "Regular" & Clasificación == "Dom")
+aterrizajes <- subset(aterrizajes, select = -c(Clase, Clasificación, Tipo, Calidad))
+despegues <- subset(despegues, select = -c(Clase, Clasificación, Tipo, Calidad))
+
+viajes_organizado <- despegues %>% 
+                      inner_join(aterrizajes, by =
+                               c("Destino" = "Aeropuerto",
+                                 "Aeropuerto" = "Destino",
+                                 "Aeronave" = "Aeronave",
+                                 "Aerolinea" = "Aerolinea",
+                                 "Pasajeros" = "Pasajeros"
+                                 ))
+head(viajes_organizado, 50)
+```
+
+```{r}
+viajes_organizado$Fecha_Hora_Despegue = paste(viajes_organizado$Fecha, viajes_organizado$Hora.x)
+viajes_organizado$Fecha_Hora_Aterrizaje = paste(viajes_organizado$Fecha, viajes_organizado$Hora.y)
+viajes_organizado$Fecha_Hora_Despegue = dmy_hm(viajes_organizado$Fecha_Hora_Despegue)
+viajes_organizado$Fecha_Hora_Aterrizaje = dmy_hm(viajes_organizado$Fecha_Hora_Aterrizaje)
+rm(c(aeropuertos, aterrizajes, viajes))
+
+viajes_organizado$dia_semana = wday(viajes_organizado$Fecha_Hora_Despegue, label = TRUE, abbr = FALSE)
+head(sample_n(viajes_organizado, 10))
+
 ```
 
 #### Parte Wikipedia
