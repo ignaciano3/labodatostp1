@@ -14,6 +14,8 @@ require(rvest)
 require(xml2)
 require(geosphere)
 require(lubridate)
+require(leaflet)
+require(tibble)
 ```
 
 ### Preprocesamiento
@@ -32,9 +34,8 @@ viajes <- viajes %>%
                      Calidad = `Calidad.dato`)
 viajes$Fecha_Hora = paste(viajes$Fecha, viajes$Hora)
 viajes$Fecha_Hora = dmy_hm(viajes$Fecha_Hora)
-viajes = viajes[,c(-1, -2)]
-viajes$id = 1:nrow(viajes)
-
+viajes <- subset(viajes, select = -c(Fecha, Hora, Calidad))
+viajes = add_column(viajes, id = 1:nrow(viajes), .before = 1)
 head(sample_n(viajes, 10))
 ```
 
@@ -44,8 +45,8 @@ head(sample_n(viajes, 10))
 ```{r}
 aterrizajes <- viajes %>% filter(Tipo == "Aterrizaje" & Clase == "Regular" & Clasificación == "Dom")
 despegues <- viajes %>% filter(Tipo == "Despegue" & Clase == "Regular" & Clasificación == "Dom")
-aterrizajes <- subset(aterrizajes, select = -c(Clase, Clasificación, Tipo, Calidad))
-despegues <- subset(despegues, select = -c(Clase, Clasificación, Tipo, Calidad))
+aterrizajes <- subset(aterrizajes, select = -c(Clase, Clasificación, Tipo))
+despegues <- subset(despegues, select = -c(Clase, Clasificación, Tipo))
 
 viajes_organizado <- despegues %>% 
                       inner_join(aterrizajes, by =
@@ -53,22 +54,33 @@ viajes_organizado <- despegues %>%
                                  "Aeropuerto" = "Destino",
                                  "Aeronave" = "Aeronave",
                                  "Aerolinea" = "Aerolinea",
-                                 "Pasajeros" = "Pasajeros"
-                                 ))
-head(viajes_organizado, 50)
+                                 "Pasajeros" = "Pasajeros"),
+                               suffix = c("_despegue", "_aterrizaje"))
+
+viajes_organizado$dif_horaria = difftime(viajes_organizado$Fecha_Hora_aterrizaje, viajes_organizado$Fecha_Hora_despegue, units = "hours")
+viajes_organizado$dif_horaria = as.numeric(viajes_organizado$dif_horaria)
+viajes_organizado <- viajes_organizado %>% filter(dif_horaria <= 10 & dif_horaria >= 0)
+viajes_organizado = viajes_organizado %>% distinct(id_despegue, .keep_all = TRUE)
+viajes_organizado = viajes_organizado %>% distinct(id_aterrizaje, .keep_all = TRUE)
+
+viajes_organizado$dif_sec <- viajes_organizado$dif_horaria * 3600
+viajes_organizado <- subset(viajes_organizado, select = -c(dif_horaria))
+head(viajes_organizado, 100)
 ```
 
 ```{r}
-viajes_organizado$Fecha_Hora_Despegue = paste(viajes_organizado$Fecha, viajes_organizado$Hora.x)
-viajes_organizado$Fecha_Hora_Aterrizaje = paste(viajes_organizado$Fecha, viajes_organizado$Hora.y)
-viajes_organizado$Fecha_Hora_Despegue = dmy_hm(viajes_organizado$Fecha_Hora_Despegue)
-viajes_organizado$Fecha_Hora_Aterrizaje = dmy_hm(viajes_organizado$Fecha_Hora_Aterrizaje)
-rm(c(aeropuertos, aterrizajes, viajes))
 
-viajes_organizado$dia_semana = wday(viajes_organizado$Fecha_Hora_Despegue, label = TRUE, abbr = FALSE)
-head(sample_n(viajes_organizado, 10))
+viajes_organizado$dia_semana.x = wday(viajes_organizado$Fecha_Hora_despegue, label = TRUE, abbr = FALSE)
+viajes_organizado$dia_semana.y = wday(viajes_organizado$Fecha_Hora_aterrizaje, label = TRUE, abbr = FALSE)
+head(sample_n(viajes_organizado, 100),100)
 
 ```
+
+```{r}
+
+```
+
+
 
 #### Parte Wikipedia
 
