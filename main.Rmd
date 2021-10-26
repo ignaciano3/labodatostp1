@@ -8,7 +8,7 @@ output: html_notebook
 
 ### Imports de paquetes
 
-```{r}
+```{r eval=FALSE}
 require(dplyr)
 require(rvest)
 require(xml2)
@@ -16,6 +16,8 @@ require(geosphere)
 require(lubridate)
 require(leaflet)
 require(tibble)
+require(ggplot2)
+require(RColorBrewer)
 ```
 
 ### Preprocesamiento
@@ -63,21 +65,29 @@ viajes_organizado <- viajes_organizado %>% filter(dif_horaria <= 10 & dif_horari
 viajes_organizado = viajes_organizado %>% distinct(id_despegue, .keep_all = TRUE)
 viajes_organizado = viajes_organizado %>% distinct(id_aterrizaje, .keep_all = TRUE)
 
-viajes_organizado$dif_sec <- viajes_organizado$dif_horaria * 3600
-viajes_organizado <- subset(viajes_organizado, select = -c(dif_horaria))
+rm(aterrizajes, despegues, viajes)
 head(viajes_organizado, 100)
 ```
 
 ```{r}
-
-viajes_organizado$dia_semana.x = wday(viajes_organizado$Fecha_Hora_despegue, label = TRUE, abbr = FALSE)
-viajes_organizado$dia_semana.y = wday(viajes_organizado$Fecha_Hora_aterrizaje, label = TRUE, abbr = FALSE)
+viajes_organizado$dia_semana_despegue = wday(viajes_organizado$Fecha_Hora_despegue, label = TRUE, abbr = FALSE)
+viajes_organizado$dia_semana_aterrizaje = wday(viajes_organizado$Fecha_Hora_aterrizaje, label = TRUE, abbr = FALSE)
 head(sample_n(viajes_organizado, 100),100)
-
 ```
 
-```{r}
+### Gráficos
 
+```{r}
+n_occur <- viajes_organizado %>%
+            group_by(dia_semana_despegue) %>%
+            summarise(n = n())
+coul <- brewer.pal(7, "Set2") 
+
+ggplot(data=n_occur, aes(x=dia_semana_despegue, y=n)) +
+  ggtitle("Dias despegue") +
+  geom_bar(stat="identity", width = 0.7, fill = coul) +
+  xlab(element_blank()) +
+  theme_light()
 ```
 
 
@@ -114,11 +124,3 @@ geosphere puede resultarles útil.
 aeropuertos = aeropuertos[,c(3,5,6,1,2,4)]
 head(aeropuertos)
 ```
-
-Cosas para investigar
-- que aeronaves se usan mas
-- que marcas de aeronaves se usan mas
-- que aerolinea, hora se viaja mas
-en si barplots para cada variable
-
-vuelo mas lejano
