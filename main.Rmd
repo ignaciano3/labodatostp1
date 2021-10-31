@@ -173,13 +173,13 @@ for (i in 1:nrow(n_occur)) {
 m <-m %>% 
   addPopups(data = n_occur, lat =  -34.50, lng = -58.70, "Hace click en un aeropuerto para ver mas información",
                       options = popupOptions(minWidth = 3, closeOnClick = TRUE, closeButton = TRUE))
-m <-m %>% 
-  sliderInput("dia", "Dia",
-            min = 1,
-            max = 4,
-            value = range(1,4),
-            step = 1,
-            width = "10%")
+#m <-m %>% 
+#  sliderInput("dia", "Dia",
+#            min = 1,
+#            max = 4,
+#            value = range(1,4),
+#            step = 1,
+#            width = "10%")
 rm(coul)
 
 frecuenciadeViajes <- viajes_organizado %>%
