@@ -20,6 +20,8 @@ require(ggplot2)
 require(RColorBrewer)
 require(readr)
 require(polyline)
+install.packages("htmltools")
+library(shiny)
 ```
 
 ### Preprocesamiento
@@ -136,7 +138,7 @@ n_occur <- n_occur %>%
             rename(lon.y = lon, lat.y = lat)
 
 n_occur <- n_occur[,-(5:7)]
-coul <- brewer.pal(3, "Set1")
+#n_occur <- n_occur %>% filter(Aeropuerto != Destino & Destino != Aeropuerto)
 
 n_occur$distancia = distHaversine(n_occur[,2:3], n_occur[,5:6])
 head(n_occur)
@@ -145,19 +147,36 @@ head(n_occur)
 Los aeropuertos mas lejanos entre sí
 ```{r}
 n_occur <-n_occur[order(-n_occur$distancia),]
-head(n_occur[,c(1,4,7)], 1)
-
+head(n_occur[,c(1,4,7)], 1) # no mostramos más porque se repiten ?)
 ```
 
 
 ```{r}
+coul <- brewer.pal(3, "Set1")
 m <- leaflet()%>%
   addTiles() %>%
   addCircleMarkers(data = n_occur_aeropuerto,
                    lat = ~lat, lng = ~lon,
                    radius = ~n/max(n)*10,
-                   color = coul)
+                   color = coul,
+                   popup = paste0("<b>Aeropuerto: </b>", n_occur_aeropuerto$Aeropuerto,
+                                  "<br>", "<b>lat: <b>", n_occur_aeropuerto$lat,
+                                  "<br>", "<b>lon: <b>", n_occur_aeropuerto$lon))
+for (i in 1:nrow(n_occur)) {
+  m <-m %>% 
+    addPolylines(lat = c(n_occur[i,]$lat.x, n_occur[i,]$lat.y),
+                lng = c(n_occur[i,]$lon.x, n_occur[i,]$lon.y),
+                weight = 0.3)
+}
+
+m <-m %>% 
+  addPopups(data = n_occur, lat =  -34.50, lng = -58.70, "Hace click en un aeropuerto para ver mas información",
+                      options = popupOptions(minWidth = 3, closeOnClick = TRUE, closeButton = TRUE))
 rm(coul)
+
+frecuenciadeViajes <- viajes_organizado %>%
+                      group_by(Aeropuerto, Destino) %>%
+                      summarise(proporcion = n() / nrow(viajes_organizado))
 m
 ```
 
