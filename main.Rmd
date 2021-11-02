@@ -20,9 +20,6 @@ require(ggplot2)
 require(RColorBrewer)
 require(readr)
 require(polyline)
-#install.packages("htmltools") #es necesario actualizar paquetes con administrador
-library(shiny)
-library(leaflet.extras2)
 ```
 
 ### Preprocesamiento
@@ -182,40 +179,22 @@ m <-m %>%
 #            width = "10%")
 rm(coul)
 
-frecuenciadeViajes <- viajes_organizado %>%
-                      group_by(Aeropuerto, Destino) %>%
-                      summarise(proporcion = n() / nrow(viajes_organizado))
+#frecuenciadeViajes <- viajes_organizado %>%
+#                      group_by(Aeropuerto, Destino) %>%
+#                      summarise(proporcion = n() / nrow(viajes_organizado))
 m
 ```
 
 
-1. El dataset tiene el código de los aeropuertos. Agreguen nuevas variables con la ciudad,
-provincia y coordenadas que corresponde a cada aeropuerto. Pueden encontrar esta
-información en este artículo de Wikipedia
+Queda por hacer:
 
 2. Calculen la distancia recorrida por cada vuelo. La función distHaversine del paquete
 geosphere puede resultarles útil.
 
+Ya está hecha la distancia por aeropuerto. Usen igual a como está ahí.
+
 3. Calculen la velocidad media de cada vuelo 
 
-```{r}
-# pag_wiki = read_html("https://en.wikipedia.org/wiki/List_of_airports_in_Argentina")
-# elem_tabla = html_element(pag_wiki, ".wikitable")
-# 
-# latitud = html_nodes(pag_wiki, css = '.latitude')
-# latitud = html_text(latitud)
-# 
-# longitud = html_nodes(pag_wiki, css = '.longitude')
-# longitud = html_text(longitud)
-# 
-# aeropuertos = html_table(elem_tabla)
-# aeropuertos <- subset(aeropuertos, select = -c(ICAO, Coordinates))# Elimino ICAO, Coordenadas
-# aeropuertos["latitud"] = latitud
-# aeropuertos["longitud"] = longitud
-# 
-# aeropuertos <- aeropuertos %>% filter(IATA != "")
-# 
-# rm(list = c("pag_wiki", "elem_tabla", "latitud", "longitud")) #Esto es para que no queden variables sueltas
-# head(aeropuertos, 10)
-```
+Hay una variable que se llama dif_horaria y con lo del punto 2 ya se puede sacr
 
+Luego hacer algún gráfico más
