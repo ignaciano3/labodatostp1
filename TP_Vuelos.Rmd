@@ -20,7 +20,6 @@ require(tibble)
 require(ggplot2)
 require(RColorBrewer)
 require(readr)
-library(leaflet.extras2)
 library(stringr)
 library(stringi)
 ```
@@ -29,7 +28,7 @@ library(stringi)
 
 #### Archivos csv Vuelos
 
-```{r}
+```{r, results='hide'}
 ## carga del dataset de vuelos del 2021
 viajes = read_csv2("202109-informe-ministerio.csv")
 ##  Renombramos las variables del dataset para una mejor organizacion 
@@ -108,9 +107,9 @@ g <- ggplot(data=n_clase, aes(x=Clase, y=n)) +
       ylab("cantidad de Vuelos") +
       geom_text(aes(label=paste0(round(porcentaje,1),"%")),color="black",vjust=0)
 g+theme(axis.text.x=element_text(size=10, angle = 45, vjust = 1, hjust=1))
+rm(n_clase, coul)
 ```
-
-```{r fig3, fig.height = 4, fig.width = 8}
+```{r fig3, fig.height = 6, fig.width = 8, results='hide'}
 n_clase_aerolinea <- viajes %>%
                       group_by(Clase, Aerolinea) %>%
                       summarise(n = n()) %>%
@@ -126,14 +125,15 @@ g <- ggplot(data=aerolinea_no_registrada, aes(x=Clase, y=n)) +
       ylab("cantidad de Vuelos")+
       geom_text(aes(label=paste0(round(porcentaje,1),"%")),color="black",vjust=0)
 
-g+theme(axis.text.x=element_text(size=10, angle = 45, vjust = 1, hjust=1))      
+g+theme(axis.text.x=element_text(size=10, angle = 45, vjust = 1, hjust=1))
+rm(aerolinea_no_registrada, n_clase_aerolinea, coul)
 ```
 
 Nuestros objetivos principales son: - Poder establecer las conexciones entre los aeropuertos - Identificar los aeropuertos más importantes del país en cuánto a la cantidad de despegues y aterrizajes. - Establecer la temporalidad y recurrencia de los vuelos, fueron estos afectados por las medidas tomadas durante la pandemia de COVID-19?
 
 A partir de la exploración inicial del dataframe, decidimos evaluar y analizar solamente los vuelos que están clasificados como clase Regular. Si bien éstos representan el 33% de los datos, nuestros interés está puesto sobre los vuelos de cabojate regulares operados por aerolineas registradas y decidimos filtrar los vuelos de entrenamiento, privados, internacionales y no regulares.
 
-#### Separo en aterrizajes y despegues
+### Separo en aterrizajes y despegues
 
 ```{r}
 aterrizajes <- viajes %>% filter(Tipo == "Aterrizaje" & Clase == "Regular" & Clasificación == "Dom")
@@ -163,7 +163,7 @@ viajes_organizado$dia_semana_despegue = wday(viajes_organizado$Fecha_Hora_despeg
 viajes_organizado$dia_semana_aterrizaje = wday(viajes_organizado$Fecha_Hora_aterrizaje, label = TRUE, abbr = FALSE)
 ```
 
-```{r}
+```{r, echo=FALSE}
 head(sample_n(viajes_organizado, 100),100)
 ```
 
@@ -177,7 +177,7 @@ viajes_organizado_2020 <- viajes_2020 %>% filter(Clasificación == c("Cabotaje  
 
 ### Aeropuertos
 
-```{r}
+```{r, results='hide'}
 aeropuertos = read_csv("sna_abril_2021_fixed_encoding (1).csv")
 aeropuertos <- subset(aeropuertos, select = c(fna, nam, ana, x, y))
 aeropuertos = aeropuertos %>% rename(Nombre = fna,
@@ -211,6 +211,7 @@ n_occur <- n_occur %>%
 n_occur <- n_occur[,-(5:7)]
 n_occur$distancia = distHaversine(n_occur[,2:3], n_occur[,5:6])
 head(n_occur)
+rm(aeropuertos)
 ```
 
 Los aeropuertos mas lejanos entre sí
@@ -241,11 +242,8 @@ m <-m %>%
   addPopups(data = n_occur, lat =  -34.50, lng = -58.70, "Hace click en un aeropuerto para ver mas información",
                       options = popupOptions(minWidth = 3, closeOnClick = TRUE, closeButton = TRUE))
 
-rm(coul)
-frecuenciadeViajes <- viajes_organizado %>%
-                      group_by(Aeropuerto, Destino) %>%
-                      summarise(proporcion = n() / nrow(viajes_organizado))
 m
+rm(m, coul)
 ```
 
 ```{r, results='hide'}
@@ -261,6 +259,7 @@ g <- ggplot(data=n_pasajeros, aes(x=Pasajeros, y=n)) +
   theme_light()
 
 g+theme(axis.text=element_text(size=10))
+rm(g)
 ```
 
 ```{r}
@@ -277,7 +276,7 @@ ggplot(data=n_occur, aes(x=dia_semana_despegue, y=n)) +
   xlab(element_blank()) +
   ylab("cantidad de vuelos") +
   theme_light()
-rm(promedio)
+rm(promedio, n_occur, coul)
 ```
 
 ```{r}
@@ -297,6 +296,8 @@ g <- ggplot(data=n_pasajeros_dias, aes(x=dia_semana_despegue, y=Pasajeros_dias))
   theme_light()
 
 g+theme(axis.text=element_text(size=10))
+
+rm(n_pasajeros_dias, coul)
 ```
 
 Si bien se observa que los días miércoles, en promedio salen menos vuelos, la cantidad de pasajeros que vuelva por dia es practicamente constante a lo largo de la semana. Es posible que si bien los días martes, miercoles y jueves salgan menos vuelos, éstos van más llenos.
@@ -310,6 +311,7 @@ g <- ggplot(data = n_diarios, aes(x = fecha, y =n))+
      geom_line() +
      scale_x_date(name = "Mes", date_breaks = "1 month", minor_breaks = NULL, labels = function(x) stri_trans_totitle(format(x, "%B")))
 g+theme(axis.text=element_text(size=12))
+rm(n_diarios)
 ```
 
 Para ver los efectos de la pandemia en la cantidad de vuelos de cabotaje vamos a incorporar los datasert de vuelos del 2019 y 2020.
@@ -330,6 +332,7 @@ viajes_completo <- subset(viajes_organizado, select = c(Fecha_Hora_despegue, Aer
                     union_all(viajes_organizado_2020_despegues) 
 
 viajes_completo[order(as.Date(viajes_completo$Fecha_Hora_despegue, format="%d/%m/%Y")),]
+rm(viajes_organizado_2019, viajes_organizado_2020)
 ```
 
 ```{r fig2, fig.height = 5, fig.width = 15}
@@ -344,4 +347,5 @@ g <- ggplot(data = n_diarios_completo, aes(x = fecha, y = n, color = year(fecha)
 g+theme(axis.text.x=element_text(size=12, angle = 45, vjust = .5),
         axis.text.y = element_text(size = 12),
         legend.position="none")
+rm(g, n_diarios_completo)
 ```
