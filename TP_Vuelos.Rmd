@@ -1,0 +1,347 @@
+---
+title: "Trabajo Práctico 1"
+author: "Ignacio Garcia Pizales, Mara Mantegazza y María Carolina Rojas"
+date: "18 de Octubre"
+output: html_notebook
+---
+
+------------------------------------------------------------------------
+
+### Imports de paquetes
+
+```{r, results='hide'}
+require(dplyr)
+require(rvest)
+require(xml2)
+require(geosphere)
+require(lubridate)
+require(leaflet)
+require(tibble)
+require(ggplot2)
+require(RColorBrewer)
+require(readr)
+library(leaflet.extras2)
+library(stringr)
+library(stringi)
+```
+
+### Preprocesamiento
+
+#### Archivos csv Vuelos
+
+```{r}
+## carga del dataset de vuelos del 2021
+viajes = read_csv2("202109-informe-ministerio.csv")
+##  Renombramos las variables del dataset para una mejor organizacion 
+viajes <- viajes %>% 
+              rename(Hora = `Hora UTC`,
+                     Clase = `Clase de Vuelo (todos los vuelos)`,
+                     Clasificación = `Clasificación Vuelo`,
+                     Tipo = `Tipo de Movimiento`,
+                     Destino = `Origen / Destino`,
+                     Aerolinea = `Aerolinea Nombre`,
+                     Calidad = `Calidad dato`)
+
+
+## El dataset posee informacion de fecha y hora de cada uno de los vuelos, ésta información esta dada en formato string la fecha y en formato time la hora. Para poder utilizar y operar con esta esta información y es conveniente unifircar el formato y transformarla a un formato de fecha-hora.
+viajes$Fecha_Hora = paste(viajes$Fecha, viajes$Hora)
+viajes$Fecha_Hora = dmy_hms(viajes$Fecha_Hora)
+viajes <- subset(viajes, select = -c(Fecha, Hora, Calidad))
+viajes = add_column(viajes, id = 1:nrow(viajes), .before = 1)
+```
+```{r, echo =FALSE}
+head(sample_n(viajes, 10))
+```
+
+```{r}
+## carga del dataset de vuelos del 2020
+viajes_2020 = read.csv2("aterrizajes-y-despegues-registrados-por-eana-2020.csv", sep = ";")
+
+##  Renombramos las variables del dataset para una mejor organizacion 
+viajes_2020 <- viajes_2020 %>% 
+              rename(Clase = `Clase.de.Vuelo`,
+                     Clasificación = `Clasificación.Vuelo`,
+                     Tipo = `Tipo.de.Movimiento`,
+                     Destino = `Destino.OACI`,
+                     Aerolinea = `Aerolinea.Nombre`,
+                     Origen = `Origen.OACI`)
+
+## El dataset posee informacion de fecha en formato string la fecha. Para poder utilizar y operar con esta esta información y es conveniente  transformarla a un formato de fecha.
+viajes_2020$Fecha <- dmy(viajes_2020$Fecha)
+
+## carga del dataset de vuelos del 2019
+viajes_2019 = read.csv2("aterrizajes-y-despegues-registrados-por-eana-2019.csv", sep = ";")
+
+##  Renombramos las variables del dataset para una mejor organizacion 
+viajes_2019 <- viajes_2019 %>% 
+              rename(Clase = `Clase.de.Vuelo`,
+                     Clasificación = `Clasificación.Vuelo`,
+                     Tipo = `Tipo.de.Movimiento`,
+                     Destino = `Destino.OACI`,
+                     Aerolinea = `Aerolinea.Nombre`,
+                     Origen = `Origen.OACI`)
+
+## El dataset posee informacion de fecha en formato string la fecha. Para poder utilizar y operar con esta esta información y es conveniente  transformarla a un formato de fecha.
+viajes_2019$Fecha <- dmy(viajes_2019$Fecha)
+```
+
+## EXPLORANDO EL DATASET DE VUELOS DEL AÑO 2021
+
+El objetivo de explorar los datos previo a cualquier analisis es conocer el dataset y entender que tipo de variables se estan utilizando, en que formatos están. A partir de esto, poder plantearse objetivos y filtrar el dataset original quedándose con la información que vaya a utilizarse.
+
+
+```{r, echo=FALSE}
+head(viajes)
+```
+
+```{r}
+n_clase <- viajes %>%
+            group_by(Clase) %>%
+            summarise(n = n()) %>%
+            mutate(porcentaje = n/sum(n)*100)
+
+coul <- brewer.pal(9, "Set3")
+g <- ggplot(data=n_clase, aes(x=Clase, y=n)) +
+      geom_bar(stat="identity", width = 0.7, fill = coul)+
+      ggtitle("Clase de vuelos registrados en el período 01/01/2021-30/09/2021") +
+      xlab(element_blank()) +
+      ylab("cantidad de Vuelos") +
+      geom_text(aes(label=paste0(round(porcentaje,1),"%")),color="black",vjust=0)
+g+theme(axis.text.x=element_text(size=10, angle = 45, vjust = 1, hjust=1))
+```
+
+```{r fig3, fig.height = 4, fig.width = 8}
+n_clase_aerolinea <- viajes %>%
+                      group_by(Clase, Aerolinea) %>%
+                      summarise(n = n()) %>%
+                      mutate(porcentaje = n/sum(n)*100)
+
+aerolinea_no_registrada <- subset(n_clase_aerolinea, Aerolinea == 0)
+
+coul <- brewer.pal(9, "Set3")
+g <- ggplot(data=aerolinea_no_registrada, aes(x=Clase, y=n)) +
+     ggtitle("Cantidad de vuelos operados por aerolineas no registradas") +
+      geom_bar(stat="identity", width = 0.7, fill = coul)+
+      xlab(element_blank()) +
+      ylab("cantidad de Vuelos")+
+      geom_text(aes(label=paste0(round(porcentaje,1),"%")),color="black",vjust=0)
+
+g+theme(axis.text.x=element_text(size=10, angle = 45, vjust = 1, hjust=1))      
+```
+
+Nuestros objetivos principales son: - Poder establecer las conexciones entre los aeropuertos - Identificar los aeropuertos más importantes del país en cuánto a la cantidad de despegues y aterrizajes. - Establecer la temporalidad y recurrencia de los vuelos, fueron estos afectados por las medidas tomadas durante la pandemia de COVID-19?
+
+A partir de la exploración inicial del dataframe, decidimos evaluar y analizar solamente los vuelos que están clasificados como clase Regular. Si bien éstos representan el 33% de los datos, nuestros interés está puesto sobre los vuelos de cabojate regulares operados por aerolineas registradas y decidimos filtrar los vuelos de entrenamiento, privados, internacionales y no regulares.
+
+#### Separo en aterrizajes y despegues
+
+```{r}
+aterrizajes <- viajes %>% filter(Tipo == "Aterrizaje" & Clase == "Regular" & Clasificación == "Dom")
+despegues <- viajes %>% filter(Tipo == "Despegue" & Clase == "Regular" & Clasificación == "Dom")
+aterrizajes <- subset(aterrizajes, select = -c(Clase, Clasificación, Tipo))
+despegues <- subset(despegues, select = -c(Clase, Clasificación, Tipo))
+viajes_organizado <- despegues %>% 
+                      inner_join(aterrizajes, by =
+                               c("Destino" = "Aeropuerto",
+                                 "Aeropuerto" = "Destino",
+                                 "Aeronave" = "Aeronave",
+                                 "Aerolinea" = "Aerolinea",
+                                 "Pasajeros" = "Pasajeros"),
+                               suffix = c("_despegue", "_aterrizaje"))
+viajes_organizado$dif_horaria = difftime(viajes_organizado$Fecha_Hora_aterrizaje, viajes_organizado$Fecha_Hora_despegue, units = "hours")
+viajes_organizado$dif_horaria = as.numeric(viajes_organizado$dif_horaria)
+viajes_organizado <- viajes_organizado %>% filter(dif_horaria <= 10 & dif_horaria >= 0)
+viajes_organizado = viajes_organizado %>% distinct(id_despegue, .keep_all = TRUE)
+viajes_organizado = viajes_organizado %>% distinct(id_aterrizaje, .keep_all = TRUE)
+viajes_organizado <- viajes_organizado %>% filter(Aeropuerto != Destino)
+rm(viajes, aterrizajes, despegues)
+head(viajes_organizado, 100)
+```
+
+```{r}
+viajes_organizado$dia_semana_despegue = wday(viajes_organizado$Fecha_Hora_despegue, label = TRUE, abbr = FALSE)
+viajes_organizado$dia_semana_aterrizaje = wday(viajes_organizado$Fecha_Hora_aterrizaje, label = TRUE, abbr = FALSE)
+```
+
+```{r}
+head(sample_n(viajes_organizado, 100),100)
+```
+
+```{r}
+viajes_organizado_2019 <- viajes_2019 %>% filter(Clasificación == "Cabotaje     " &
+                                                  Clase == "Regular                             ")
+
+viajes_organizado_2020 <- viajes_2020 %>% filter(Clasificación == c("Cabotaje     ", "Cabojate") &
+                                                  Clase == c("Regular                             ", "Regular"))                         
+```
+
+### Aeropuertos
+
+```{r}
+aeropuertos = read_csv("sna_abril_2021_fixed_encoding (1).csv")
+aeropuertos <- subset(aeropuertos, select = c(fna, nam, ana, x, y))
+aeropuertos = aeropuertos %>% rename(Nombre = fna,
+                                     Ciudad = nam,
+                                     id = ana,
+                                     lon = x,
+                                     lat = y)
+head(aeropuertos)
+```
+
+### Información y gráficos
+
+```{r}
+n_occur_aeropuerto <- viajes_organizado %>%
+            group_by(Aeropuerto) %>%
+            summarise(n = n())
+n_occur_aeropuerto = n_occur_aeropuerto %>% left_join(aeropuertos, by = c("Aeropuerto" = "id"))
+n_occur <- viajes_organizado %>%
+            group_by(Aeropuerto, Destino) %>% #este groupby es para el summarize
+            summarise(n = n()) %>%
+            select(c(1,2))
+  
+n_occur <- n_occur %>%
+            inner_join(n_occur_aeropuerto, by = "Aeropuerto") %>%
+            rename(lon.x = lon, lat.x = lat)
+n_occur <- n_occur[,-(3:5)]
+n_occur <- n_occur[,c(1,3,4,2)]
+n_occur <- n_occur %>%
+            inner_join(n_occur_aeropuerto, by = c("Destino" = "Aeropuerto")) %>%
+            rename(lon.y = lon, lat.y = lat)
+n_occur <- n_occur[,-(5:7)]
+n_occur$distancia = distHaversine(n_occur[,2:3], n_occur[,5:6])
+head(n_occur)
+```
+
+Los aeropuertos mas lejanos entre sí
+
+```{r}
+n_occur <-n_occur[order(-n_occur$distancia),]
+head(n_occur[,c(1,4,7)], 1)
+```
+
+```{r}
+coul <- brewer.pal(3, "Set1")
+m <- leaflet()%>%
+  addTiles() %>%
+  addCircleMarkers(data = n_occur_aeropuerto,
+                   lat = ~lat, lng = ~lon,
+                   radius = ~n/max(n)*10,
+                   color = coul,
+                   popup = paste0("<b>Aeropuerto: </b>", n_occur_aeropuerto$Aeropuerto,
+                                  "<br>", "<b>lat: <b>", n_occur_aeropuerto$lat,
+                                  "<br>", "<b>lon: <b>", n_occur_aeropuerto$lon))
+for (i in 1:nrow(n_occur)) {
+  m <-m %>% 
+    addPolylines(lat = c(n_occur[i,]$lat.x, n_occur[i,]$lat.y),
+                lng = c(n_occur[i,]$lon.x, n_occur[i,]$lon.y),
+                weight = 0.3)
+}
+m <-m %>% 
+  addPopups(data = n_occur, lat =  -34.50, lng = -58.70, "Hace click en un aeropuerto para ver mas información",
+                      options = popupOptions(minWidth = 3, closeOnClick = TRUE, closeButton = TRUE))
+
+rm(coul)
+frecuenciadeViajes <- viajes_organizado %>%
+                      group_by(Aeropuerto, Destino) %>%
+                      summarise(proporcion = n() / nrow(viajes_organizado))
+m
+```
+
+```{r, results='hide'}
+n_pasajeros <- viajes_organizado %>%
+  group_by(Pasajeros) %>%
+  summarise(n = n())
+
+g <- ggplot(data=n_pasajeros, aes(x=Pasajeros, y=n)) +
+  ggtitle("Cantidad de vuelos en relación a la cantidad de pasajeros") +
+  geom_bar(stat="identity", width = 0.7) +
+  xlab("Cantidad de Pasajeros") +
+  ylab("Cantidad de vuelos")
+  theme_light()
+
+g+theme(axis.text=element_text(size=10))
+```
+
+```{r}
+n_occur <- viajes_organizado %>%
+            group_by(dia_semana_despegue) %>%
+            summarise(n = n()/52)
+
+coul <- brewer.pal(7, "Set2") 
+promedio = mean(n_occur$n)
+ggplot(data=n_occur, aes(x=dia_semana_despegue, y=n)) +
+  ggtitle("Promedio de despegues diarios") +
+  geom_bar(stat="identity", width = 0.7, fill = coul) +
+  geom_hline(yintercept = promedio, lwd = 1.3, col ="red") +
+  xlab(element_blank()) +
+  ylab("cantidad de vuelos") +
+  theme_light()
+rm(promedio)
+```
+
+```{r}
+n_pasajeros_dias <- viajes_organizado %>%
+                group_by(dia_semana_despegue) %>%
+                summarise(Pasajeros_dias = mean(Pasajeros)) %>%
+                mutate(porcentaje = Pasajeros_dias/sum(Pasajeros_dias)*100)
+
+coul <-brewer.pal(7, "Set3")
+ 
+g <- ggplot(data=n_pasajeros_dias, aes(x=dia_semana_despegue, y=Pasajeros_dias)) +
+  ggtitle("Cantidad de pasajeros promedio que viaja por día de semana") +
+  geom_bar(stat="identity", width = 0.7, fill = coul) +
+  xlab(element_blank()) +
+  ylab("Cantidad de pasajeros") +
+  geom_text(aes(label=paste0(round(porcentaje,1),"%")),color="black",vjust=0) +
+  theme_light()
+
+g+theme(axis.text=element_text(size=10))
+```
+
+Si bien se observa que los días miércoles, en promedio salen menos vuelos, la cantidad de pasajeros que vuelva por dia es practicamente constante a lo largo de la semana. Es posible que si bien los días martes, miercoles y jueves salgan menos vuelos, éstos van más llenos.
+
+```{r fig1, fig.height = 5, fig.width = 15}
+n_diarios <- viajes_organizado %>%
+              group_by(fecha = as.Date(Fecha_Hora_despegue))  %>%
+              summarise(n = n())
+
+g <- ggplot(data = n_diarios, aes(x = fecha, y =n))+
+     geom_line() +
+     scale_x_date(name = "Mes", date_breaks = "1 month", minor_breaks = NULL, labels = function(x) stri_trans_totitle(format(x, "%B")))
+g+theme(axis.text=element_text(size=12))
+```
+
+Para ver los efectos de la pandemia en la cantidad de vuelos de cabotaje vamos a incorporar los datasert de vuelos del 2019 y 2020.
+
+```{r}
+viajes_organizado_2019_despegues <- viajes_organizado_2019 %>%
+                                    filter(Tipo == "Despegue  ")  %>%
+                                    subset(select = c(Fecha, Aerolinea, Aeronave)) %>%
+                                    rename(Fecha_Hora_despegue = Fecha)
+
+viajes_organizado_2020_despegues <- viajes_organizado_2020 %>%
+                                    filter(Tipo == "Despegue  ")  %>%
+                                    subset(select = c(Fecha, Aerolinea, Aeronave)) %>%
+                                    rename(Fecha_Hora_despegue = Fecha)
+
+viajes_completo <- subset(viajes_organizado, select = c(Fecha_Hora_despegue, Aerolinea, Aeronave)) %>%
+                    union_all(viajes_organizado_2019_despegues) %>% 
+                    union_all(viajes_organizado_2020_despegues) 
+
+viajes_completo[order(as.Date(viajes_completo$Fecha_Hora_despegue, format="%d/%m/%Y")),]
+```
+
+```{r fig2, fig.height = 5, fig.width = 15}
+n_diarios_completo <- viajes_completo %>%
+              group_by(fecha = as.Date(Fecha_Hora_despegue))  %>%
+              summarise(n = n())
+
+g <- ggplot(data = n_diarios_completo, aes(x = fecha, y = n, color = year(fecha))) +
+     geom_line() +
+     scale_x_date(name = "", date_breaks = "1 month", minor_breaks = NULL, labels = function(x) stri_trans_totitle(format(x, "%b/%Y"))) +
+     ylab('Cantidad de vuelos')
+g+theme(axis.text.x=element_text(size=12, angle = 45, vjust = .5),
+        axis.text.y = element_text(size = 12),
+        legend.position="none")
+```
